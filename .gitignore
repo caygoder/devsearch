@@ -1,0 +1,126 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+*.swp
+db.sqlite3
+/static
+/media
+.env
+local_settings.py
+/venv
+env/
+instance/
+*.egg-info
+.pytest_cache
+.coverage
+htmlcov/
+.tox
+.idea/
+.vscode/
+*.log
+__pycache__/
+*.sqlite3
+*.mo
+*.pot
+*.orig
+*.py.swp
+*~
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+dist/
+develop-eggs/
+*.egg-info/
+.eggs/
+sdist/
+*.whl
+*.tar.gz
+*.zip
+*.rpm
+*.deb
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django specific
+*.log
+local_settings.py
+db.sqlite3
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+instance/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+.idea/
+.vscode/
+*.swp
+*~
+.vimrc
+.emacs
+.project
+.pydevproject
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite3
+*.bak
+*.db
+
+# Temporary files
+*~
+*.tmp
+*.bak
+*.swp
+*.swpx
+*.vsdx
+
+# Virtualenv
+.venv/
+venv/
+env/
+ENV/
+instance/
+
+# Cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Compiled files
+*.mo
+*.pot
+
+# Django migrations
+migrations/*.py
+!migrations/__init__.py
