@@ -2,9 +2,17 @@
 
 {% block content %}
 <h1>Project List</h1>
+{{ msg }}
+
+{% if number > 10 %}
+    <p>There are more than 10 projects.</p>
+{% else %}
+    <p>There are 10 or fewer projects.</p>
+{% endif %} 
+
 <ul>
-    <li>Project 1: Build a website</li>
-    <li>Project 2: Create a mobile app</li>
-    <li>Project 3: Develop a REST API</li>
+    {% for id, project in projects.items %}
+        <li><a href="{% url 'project' id %}">{{project.name}}</a>: {{project.description}}</li>
+    {% endfor %}
 </ul>
 {% endblock %}

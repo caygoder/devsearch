@@ -1,10 +1,13 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>Project 1: Build a website</h1>
-<p>Description: This project involves building a responsive and user-friendly website.</p>
-<p>Technologies: HTML, CSS, JavaScript, Django</p>
-<p>Status: In Progress</p>
-<p>Project ID: {{ pk }}</p>
-<!-- ...existing code... -->
+
+{% if project %}
+    <h1>{{ project.name }}</h1>
+    <p>Description: {{ project.description }}</p>
+    <p>Project ID: {{ pk }}</p>
+{% else %}
+    <h1>Project not found</h1>
+{% endif %}
+
 {% endblock %}
