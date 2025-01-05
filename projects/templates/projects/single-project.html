@@ -3,9 +3,21 @@
 {% block content %}
 
 {% if project %}
-    <h1>{{ project.name }}</h1>
+    <h1>{{ project.title }}</h1>
+    <p>Project ID: {{ project.id }}</p>
     <p>Description: {{ project.description }}</p>
-    <p>Project ID: {{ pk }}</p>
+    <p>Demo Link: {{ project.demo_links }}</p>
+    <p>Tags: {{ project.tags }}</p>
+    <p>Vote Total: {{ project.vote_total }}</p>
+    <p>Vote Ratio: {{ project.vote_ratio }}</p>
+
+    <hr>
+    {% for tag in project.tags.all %}
+        <span style="border:1px solid grey">{{ tag }}</span>
+    {% endfor %}
+    <hr>
+    <br>
+    
 {% else %}
     <h1>Project not found</h1>
 {% endif %}
