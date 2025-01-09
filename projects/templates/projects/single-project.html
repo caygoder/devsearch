@@ -3,21 +3,21 @@
 {% block content %}
 
 {% if project %}
+    <img style="max-width: 500px;" src="{{ project.featured_image.url }}">
     <h1>{{ project.title }}</h1>
-    <p>Project ID: {{ project.id }}</p>
-    <p>Description: {{ project.description }}</p>
-    <p>Demo Link: {{ project.demo_links }}</p>
-    <p>Tags: {{ project.tags }}</p>
-    <p>Vote Total: {{ project.vote_total }}</p>
-    <p>Vote Ratio: {{ project.vote_ratio }}</p>
 
     <hr>
     {% for tag in project.tags.all %}
         <span style="border:1px solid grey">{{ tag }}</span>
     {% endfor %}
     <hr>
-    <br>
-    
+
+    <p>Description: {{ project.description }}</p>
+    <p>Demo Links: {{ project.demo_links }}</p>
+    <p>Source Links: {{ project.source_links }}</p>
+    <p>Vote Total: {{ project.vote_total }}</p>
+    <p>Vote Ratio: {{ project.vote_ratio }}</p>
+
 {% else %}
     <h1>Project not found</h1>
 {% endif %}
