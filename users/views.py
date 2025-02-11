@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -11,22 +11,20 @@ def loginUser(request):
         return redirect('profiles')
     
     if request.method == 'POST':
-        print(request.POST)
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = request.POST.get('username', '').lower().strip()
+        password = request.POST.get('password', '')
         
         try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            messages.error(request, "Username does not exist")
-        
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('profiles')
-        else:
-            messages.error(request, "Username OR password is incorrect")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('profiles')
+            else:
+                messages.error(request, "Invalid username or password")
+                print(f"Failed login attempt for username: {username}")
+        except Exception as e:
+            messages.error(request, "An error occurred during login")
+            print(f"Login error: {str(e)}")
         
     return render(request, 'users/login_register.html')
 
@@ -42,25 +40,32 @@ def registerUser(request):
     form = CustomUserCreationForm()
     
     if request.method == 'POST':
-        print("user creation...")
         form = CustomUserCreationForm(request.POST)
         
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
-            print("user created")
-            messages.success(request, 'User account was successfully created!')
-            
-            login(request, user)
-            return redirect('profiles')
-        
-        else:
-            messages.error(request, 'Error occured during registration!')
-            print("Error creating user account")
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f"{field}: {error}")
+        try:
+            if form.is_valid():
+                # Create user instance but don't save yet
+                user = form.save(commit=False)
+                
+                # Sanitize username: convert to lowercase and strip whitespace
+                user.username = user.username.lower().strip()
+                
+                # Save the user
+                user.save()
+                
+                messages.success(request, 'User account was successfully created!')
+                login(request, user)
+                return redirect('profiles')
+            else:
+                messages.error(request, 'Error occurred during registration!')
+                # Log form validation errors in detail
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
+                        print(f"Registration validation error - {field}: {error}")
+        except Exception as e:
+            messages.error(request, 'An unexpected error occurred during registration.')
+            print(f"Unexpected registration error: {str(e)}")
     
     context = {"page": page, "form": form}
     return render(request, 'users/login_register.html', context)
@@ -72,7 +77,7 @@ def profiles(request):
     return render(request, 'users/profiles.html', context)
 
 def userProfile(request, pk):
-    profile = Profile.objects.get(id=pk)
+    profile = get_object_or_404(Profile, id=pk)
     topSkills = profile.skill_set.exclude(description__exact="")
     otherSkills = profile.skill_set.filter(description="")
     context = {'profile': profile, 'topSkills': topSkills, 'otherSkills': otherSkills}
