@@ -59,10 +59,10 @@ def registerUser(request):
             else:
                 messages.error(request, 'Error occurred during registration!')
                 # Log form validation errors in detail
-                for field, errors in form.errors.items():
-                    for error in errors:
-                        messages.error(request, f"{field}: {error}")
-                        print(f"Registration validation error - {field}: {error}")
+                # for field, errors in form.errors.items():
+                #     for error in errors:
+                #         messages.error(request, f"{field}: {error}")
+                #         print(f"Registration validation error - {field}: {error}")
         except Exception as e:
             messages.error(request, 'An unexpected error occurred during registration.')
             print(f"Unexpected registration error: {str(e)}")
