@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 logger = logging.getLogger(__name__)
 
-def upsertProfile(sender, instance, created, **kwargs):
+def createProfile(sender, instance, created, **kwargs):
     if created:
         logger.info('User Created: %s', instance)
         user = instance
@@ -18,15 +18,20 @@ def upsertProfile(sender, instance, created, **kwargs):
         )
         if profile:
             logger.info('Profile created: %s', profile)
-    else:
-        profile = Profile.objects.get(user=instance.id)
-        logger.info('Updating profile for user: %s', instance.username)
-        if profile:
-            profile.name = instance.first_name
-            profile.email = instance.email
-            profile.username = instance.username
-            profile.save()
-            logger.info('Profile updated - Username: %s, Name: %s, Email: %s', profile.username, profile.name, profile.email)
+
+@receiver(post_save, sender=Profile)
+def updateUser(sender, instance, created, **kwargs):
+    logger.info('Profile Updated: %s', instance)
+    profile = instance
+    user = profile.user
+    
+    if created == False:
+        logger.info('Updating User: %s', user)
+        user.username = profile.username
+        user.email = profile.email
+        user.first_name = profile.name
+        user.save()
+        logger.info('User updated: %s', user)
 
 @receiver(post_delete, sender=Profile)
 def deleteUser(sender, instance, **kwargs):
@@ -35,5 +40,5 @@ def deleteUser(sender, instance, **kwargs):
     user.delete()
     logger.info('User deleted: %s', user)
 
-post_save.connect(upsertProfile, sender=User)
+post_save.connect(createProfile, sender=User)
 # post_delete.connect(deleteUser, sender=Profile)

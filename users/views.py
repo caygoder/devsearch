@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile, Skill
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProfileForm
 
 def loginUser(request):
     if request.user.is_authenticated:
@@ -96,5 +96,21 @@ def userAccount(request):
 
 @login_required(login_url='login')
 def editAccount(request):
-    context = {}
+    form = ProfileForm(instance=request.user.profile)
+    
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Profile updated successfully')
+                return redirect('profiles')
+            else:
+                messages.error(request, 'An error occurred during profile update')
+        except Exception as e:
+            messages.error(request, 'An unexpected error occurred during profile update')
+            print(f"Profile update error: {str(e)}")
+    
+    context = {'form': form}
     return render(request, 'users/profile_form.html', context)
