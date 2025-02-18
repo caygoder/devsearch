@@ -55,7 +55,7 @@ def registerUser(request):
                 
                 messages.success(request, 'User account was successfully created!')
                 login(request, user)
-                return redirect('profiles')
+                return redirect('edit-account')
             else:
                 messages.error(request, 'Error occurred during registration!')
                 # Log form validation errors in detail
@@ -105,7 +105,7 @@ def editAccount(request):
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Profile updated successfully')
-                return redirect('profiles')
+                return redirect('account')
             else:
                 messages.error(request, 'An error occurred during profile update')
         except Exception as e:
