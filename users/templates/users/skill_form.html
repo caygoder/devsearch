@@ -1,5 +1,5 @@
 {% extends 'main.html' %}
-
+ 
 {% block content %}
     <!-- Main Section -->
     <main class="formPage my-xl">
@@ -7,19 +7,16 @@
             <div class="formWrapper">
                 <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
                 <br>
-
-                <form class="form" method="POST" enctype="multipart/form-data">
+                <h1>Create Skill</h1>
+                <form action="{% url 'create-skill' %}" method="post">
                     {% csrf_token %}
                     {% for field in form %}
-                        <!-- Input:Text -->
-                        <div class="form__field">
-                            <label for="formInput#text">{{field.label}}</label>
-                            {{field}}
-                        </div>
+                    {{field.label}}
+                    {{field}}
                     {% endfor %}
-                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+                    <input type="submit" value="Submit" />
                 </form>
             </div>
         </div>
     </main>
-{% endblock %}
+{% endblock content %}
