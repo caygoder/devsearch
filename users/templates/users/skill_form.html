@@ -8,13 +8,13 @@
                 <a class="backButton" href="{% url 'account' %}"><i class="im im-angle-left"></i></a>
                 <br>
                 <h1>Create Skill</h1>
-                <form action="{% url 'create-skill' %}" method="post">
+                <form method="post">
                     {% csrf_token %}
                     {% for field in form %}
                     {{field.label}}
                     {{field}}
                     {% endfor %}
-                    <input type="submit" value="Submit" />
+                    <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
                 </form>
             </div>
         </div>

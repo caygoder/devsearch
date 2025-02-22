@@ -121,6 +121,7 @@ def createSkill(request):
             skill = form.save(commit=False)
             skill.owner = request.user.profile
             skill.save()
+            messages.success(request, 'Skill added successfully')
             return redirect('account')
     context = {'form': form}
     return render(request, 'users/skill_form.html', context)
@@ -133,8 +134,21 @@ def updateSkill(request, pk):
         form = SkillForm(request.POST, instance=skill)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Skill updated successfully')
             return redirect('account')
         else:
+            messages.error(request, 'An error occurred during skill update')
             print('Error')
     context = {'form': form}
     return render(request, 'users/skill_form.html', context)
+
+@login_required(login_url='login')
+def deleteSkill(request, pk):
+    skill = request.user.profile.skill_set.get(id=pk)
+    if request.method == 'POST':
+        skill.delete()
+        messages.success(request, 'Skill removed successfully')
+        return redirect('account')
+    context = {'object': skill}
+    return render(request, 'projects/delete_template.html', context)
+    
