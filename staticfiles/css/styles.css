@@ -1,0 +1,10 @@
+/* ...existing code... */
+
+.btn--sub {
+    /* ...existing styles... */
+    text-decoration: none; /* Ensure no underline */
+    display: inline-block; /* Ensure it behaves like a button */
+    text-align: center; /* Center the text */
+}
+
+/* ...existing code... */
