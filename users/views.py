@@ -3,8 +3,11 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Profile, Skill
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from django.db.models import Q
+
+from users.utils import searchProfiles
+from users.models import Profile, Skill
+from users.forms import CustomUserCreationForm, ProfileForm, SkillForm
 
 def loginUser(request):
     if request.user.is_authenticated:
@@ -38,7 +41,7 @@ def logoutUser(request):
 def registerUser(request):
     page = 'register'
     form = CustomUserCreationForm()
-    
+
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         
@@ -72,8 +75,8 @@ def registerUser(request):
     
 
 def profiles(request):
-    profiles = Profile.objects.all()
-    context = {'profiles': profiles}
+    profiles, search_query = searchProfiles(request)
+    context = {'profiles': profiles, 'search_query': search_query}
     return render(request, 'users/profiles.html', context)
 
 def userProfile(request, pk):
@@ -151,4 +154,3 @@ def deleteSkill(request, pk):
         return redirect('account')
     context = {'object': skill}
     return render(request, 'projects/delete_template.html', context)
-    

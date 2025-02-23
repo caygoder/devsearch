@@ -3,17 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Project, Tag, Review
 from .forms import ProjectForm
+from projects.utils import searchProjects
 
 # Create your views here.
 def projects(request):
-    projectsObj = Project.objects.all()
-    context = {'projects': projectsObj,}
+    search_query = ''
+    projects, search_query = searchProjects(request)
+    context = {'projects': projects, 'search_query': search_query}
     return render(request, 'projects/projects.html', context)
 
 def project(request, id):
     try:
-        projectObj = Project.objects.get(id=id)
-        tags = projectObj.tags.all()
+        project = Project.objects.get(id=id)
+        tags = project.tags.all()
     except Project.DoesNotExist:
         projectObj = None
     return render(request, 'projects/single-project.html', {'id': id, 'project': projectObj, 'tags': tags})
